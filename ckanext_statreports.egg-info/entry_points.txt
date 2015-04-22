@@ -1,0 +1,7 @@
+
+        [ckan.plugins]
+	# Add plugins here, eg
+	myplugin=ckanext.statreports:StatReports
+		[paste.paster_command]
+	reporter = ckanext.statreports.commands.reporter:Reporter
+	

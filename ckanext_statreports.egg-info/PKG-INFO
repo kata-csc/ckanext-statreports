@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: ckanext-statreports
+Version: 0.0
+Summary: Generate sreports based on ckan usage statistics
+Home-page: UNKNOWN
+Author: CSC - IT Center for Science ltd.
+Author-email: servicedesk@csc.fi
+License: AGPL3
+Description: 	
+Platform: UNKNOWN

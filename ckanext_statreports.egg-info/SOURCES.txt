@@ -1,0 +1,11 @@
+setup.py
+ckanext/__init__.py
+ckanext/statreports/__init__.py
+ckanext/statreports/plugin.py
+ckanext_statreports.egg-info/PKG-INFO
+ckanext_statreports.egg-info/SOURCES.txt
+ckanext_statreports.egg-info/dependency_links.txt
+ckanext_statreports.egg-info/entry_points.txt
+ckanext_statreports.egg-info/namespace_packages.txt
+ckanext_statreports.egg-info/not-zip-safe
+ckanext_statreports.egg-info/top_level.txt
