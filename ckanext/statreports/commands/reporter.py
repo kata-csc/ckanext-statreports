@@ -3,10 +3,10 @@ __author__ = 'salum'
 import sys
 import logging
 
-import sqlalchemy as sa
 
-import ckan.model as model
 from ckan.lib.cli import CkanCommand
+
+from ckanext.statreports.statistics.user import UserStats
 
 log = logging.getLogger(__name__)
 
@@ -29,22 +29,11 @@ class Reporter(CkanCommand):
             sys.exit(1)
         cmd = self.args[0]
         if cmd == 'users':
-            self.count_users()
-
-    def count_users(self):
-        users = self.total_users()
-        print(users)
-        return users
+            count = UserStats.total_users()
+            print count
 
 
-    def total_users(self):
-        '''
-        Return total of users
 
-        :return: count
-        '''
-        res = model.Session.query(model.User.id).count()
-        return res
 
 
 
