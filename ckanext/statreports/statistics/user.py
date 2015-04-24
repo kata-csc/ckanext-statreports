@@ -1,11 +1,11 @@
-'''User statistics'''
+'''Report CKAN user statistics'''
 
 import ckan.model as model
 
 import sqlalchemy as sa
 
 
-def table(name):
+def _table(name):
     return sa.Table(name, model.meta.metadata, autoload=True)
 
 
@@ -28,7 +28,7 @@ class UserStats(object):
 
         :return: count
         '''
-        user = table('user')
+        user = _table('user')
         q = sa.select([sa.func.count('id'), sa.extract('year', user.c.created),
                        sa.extract('month', user.c.created)],
                       from_obj=[user]).\

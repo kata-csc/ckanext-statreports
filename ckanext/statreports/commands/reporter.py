@@ -7,6 +7,7 @@ from ckan.lib.cli import CkanCommand
 import ckan.model
 
 from ckanext.statreports.statistics.user import UserStats
+from ckanext.statreports.statistics.package import PackageStats
 
 log = logging.getLogger(__name__)
 
@@ -49,13 +50,15 @@ CKAN usage report
 
     Totals:
     -------
+    Datasets: {datasets}
     Users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
 
     '''.format(users=UserStats.total_users(),
                visitors=UserStats.total_visitors(self.engine),
-               visitors_logged=UserStats.total_logged_in(self.engine))
+               visitors_logged=UserStats.total_logged_in(self.engine),
+               datasets=PackageStats.total_packages())
 
         monthly_new_users = UserStats.users_by_month()
 
