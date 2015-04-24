@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 import logging
 
@@ -14,8 +15,10 @@ class Reporter(CkanCommand):
     Generate reports of CKAN usage statistics
 
     Usage:
-        reporter send_mail
-            - Send an e-mail report to the address given in configuration
+        reporter mail_report
+            - Send a usage report e-mail to the address given in configuration
+        reporter report
+            - Print usage report
         reporter users
             - Show user count
         reporter visitors
@@ -34,52 +37,73 @@ class Reporter(CkanCommand):
 
     def _error(self, msg):
         print 'ERROR: %s' %s
+        exit()
 
-    def command(self):
-        self._load_config()
-        engine = ckan.model.meta.engine
-
-        if len(self.args) == 0:
-            self._help()
-
-        cmd = self.args[0]
-
-        if cmd == 'send_mail':
-            config = self._get_config()
-            try:
-                mail_to = config['statreports.report_email']
-            except KeyError:
-                self._error('Please set up statreports.report_email in configuration under [app:main]')
-
-            mail_from = config.get('ckan.site_url', '')
-            # mail_from = config.get('smtp.mail_from', '')
-            message = u'''
-    CKAN usage report
-    -----------------
+    def _generate_report(self):
+        message = u'''
+CKAN usage report
+-----------------
 
     Totals:
     -------
     Users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
-            '''
+            '''.format(users=UserStats.total_users(),
+                       visitors=UserStats.total_visitors(self.engine),
+                       visitors_logged=UserStats.total_logged_in(self.engine))
 
-            mail_body = message.format(users=UserStats.total_users(),
-                                       visitors=UserStats.total_visitors(engine),
-                                       visitors_logged=UserStats.total_logged_in(engine))
+        for i in range(0, 3):
+            curdate = datetime.utcnow()
+            month = (int(curdate.month) - i) % 12  # [0..11]
+            year_month = '%s-%02d' % (curdate.year, 12 if month == 0 else month)
+            message += u'''
 
-            from ckan.lib.mailer import _mail_recipient  # Must imported after translator object is initialized
+    Month {month}:
+    --------------
+    Unique visitors: {visitors}
+    Unique logged in users: {visitors_logged}
+            '''.format(month=year_month,
+                       users=UserStats.total_users(),
+                       visitors=UserStats.total_visitors(self.engine, year_month=year_month),
+                       visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month))
 
-            _mail_recipient('Recipient', mail_to, 'CKAN reporter', mail_from, 'CKAN usage report', mail_body)
+        return message
+
+    def command(self):
+        self._load_config()
+        self.engine = ckan.model.meta.engine
+
+        if len(self.args) == 0:
+            self._help()
+
+        cmd = self.args[0]
+
+        if cmd == 'mail_report':
+            config = self._get_config()
+            try:
+                mail_to = config['statreports.report_email']
+            except KeyError:
+                self._error('Please set up statreports.report_email in configuration under [app:main]')
+
+            mailer_url = config.get('ckan.site_url', '')
+            mail_body = self._generate_report()
+
+            from ckan.lib.mailer import _mail_recipient  # Must by imported after translator object is initialized
+
+            _mail_recipient('Recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
+
+        elif cmd == 'report':
+            print self._generate_report()
 
         elif cmd == 'users':
             print UserStats.total_users()
 
         elif cmd == 'visitors':
-            print UserStats.total_visitors(engine)
+            print UserStats.total_visitors(self.engine)
 
         elif cmd == 'visitors_logged':
-            print UserStats.total_logged_in(engine)
+            print UserStats.total_logged_in(self.engine)
 
         else:
             self._help()
