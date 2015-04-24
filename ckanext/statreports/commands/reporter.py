@@ -10,12 +10,16 @@ log = logging.getLogger(__name__)
 
 class Reporter(CkanCommand):
     '''
-    Reporter is used to generate reports of CKAN usage statistics
+    Generate reports of CKAN usage statistics
+
+    Usage:
+      reporter users
+        - Show user count
 
     '''
     summary = __doc__.split('\n')[0]
-    usage = __doc__
-    max_args = 1
+    usage = '\n'.join(__doc__.split('\n')[1:])
+    max_args = 10
     min_args = 0
 
     def command(self):
