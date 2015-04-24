@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.0'
+version = '0.0.1'
 
 setup(
     name='ckanext-statreports',
     version=version,
     description="Generate sreports based on ckan usage statistics",
-    long_description="""\
-	""",
+    long_description="""
+    """,
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     keywords='',
     author='CSC - IT Center for Science ltd.',
@@ -21,12 +21,12 @@ setup(
     zip_safe=False,
     install_requires=[  # -*- Extra requirements: -*-
     ],
-    entry_points= \
-        """
-        [ckan.plugins]
-	# Add plugins here, eg
-	myplugin=ckanext.statreports:StatReports
-		[paste.paster_command]
-	reporter = ckanext.statreports.commands.reporter:Reporter
-	""",
+    entry_points=
+    """
+    [ckan.plugins]
+    # Add plugins here, eg
+    statreports = ckanext.statreports.plugin:StatReports
+    [paste.paster_command]
+    reporter = ckanext.statreports.commands.reporter:Reporter
+    """,
 )
