@@ -1,4 +1,5 @@
 from datetime import datetime
+import pprint
 import sys
 import logging
 
@@ -15,6 +16,8 @@ class Reporter(CkanCommand):
     Generate reports of CKAN usage statistics
 
     Usage:
+        reporter new_users
+            - Show monthly new users
         reporter mail_report
             - Send a usage report e-mail to the address given in configuration
         reporter report
@@ -36,7 +39,7 @@ class Reporter(CkanCommand):
         sys.exit(1)
 
     def _error(self, msg):
-        print 'ERROR: %s' %s
+        print 'ERROR: %s' % msg
         exit()
 
     def _generate_report(self):
@@ -49,24 +52,27 @@ CKAN usage report
     Users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
-            '''.format(users=UserStats.total_users(),
-                       visitors=UserStats.total_visitors(self.engine),
-                       visitors_logged=UserStats.total_logged_in(self.engine))
+
+    '''.format(users=UserStats.total_users(),
+               visitors=UserStats.total_visitors(self.engine),
+               visitors_logged=UserStats.total_logged_in(self.engine))
+
+        monthly_new_users = UserStats.users_by_month()
 
         for i in range(0, 3):
             curdate = datetime.utcnow()
             month = (int(curdate.month) - i) % 12  # [0..11]
             year_month = '%s-%02d' % (curdate.year, 12 if month == 0 else month)
             message += u'''
-
     Month {month}:
     --------------
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
-            '''.format(month=year_month,
-                       users=UserStats.total_users(),
-                       visitors=UserStats.total_visitors(self.engine, year_month=year_month),
-                       visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month))
+    New users: {new_users}
+    '''.format(month=year_month,
+               visitors=UserStats.total_visitors(self.engine, year_month=year_month),
+               visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
+               new_users=monthly_new_users.get(year_month, 0))
 
         return message
 
@@ -98,6 +104,11 @@ CKAN usage report
 
         elif cmd == 'users':
             print UserStats.total_users()
+
+        elif cmd == 'new_users':
+            monthly = UserStats.users_by_month()
+            for month, users in monthly.iteritems():
+                print '%s: %s' % (month, users)
 
         elif cmd == 'visitors':
             print UserStats.total_visitors(self.engine)
