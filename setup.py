@@ -6,7 +6,7 @@ version = '0.0.1'
 setup(
     name='ckanext-statreports',
     version=version,
-    description="Generate sreports based on ckan usage statistics",
+    description="Generate reports based on ckan usage statistics",
     long_description="""
     """,
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
