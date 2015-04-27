@@ -25,3 +25,27 @@ class PackageStats(object):
         res = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
             filter(model.Package.type == "dataset").count()
         return res
+
+    @classmethod
+    def private_package_count(cls):
+        '''
+        Return total of unpublished packages
+        Assuming state="active", type="dataset", private=True
+
+        :return: count
+        '''
+        res = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
+            filter(model.Package.type == "dataset").filter(model.Package.private == True).count()
+        return res
+
+    @classmethod
+    def public_package_count(cls):
+        '''
+        Return total of published packages
+        Assuming state="active", type="dataset", private=False
+
+        :return: count
+        '''
+        res = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
+            filter(model.Package.type == "dataset").filter(model.Package.private == False).count()
+        return res

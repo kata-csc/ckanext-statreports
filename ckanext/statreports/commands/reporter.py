@@ -29,6 +29,10 @@ class Reporter(CkanCommand):
             - Show count of unique portal visitors
         reporter visitors_logged
             - Show count of unique portal visitors for logged in users
+        reporter private_packages
+            - Show number of private packages
+        reporter public_packages
+            - Show number of public packages
     '''
     summary = __doc__.split('\n')[0]
     usage = __doc__
@@ -51,6 +55,8 @@ CKAN usage report
     Totals:
     -------
     Datasets: {datasets}
+    Public dataset: {public}
+    Private datsets: {private}
     Users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
@@ -58,7 +64,9 @@ CKAN usage report
     '''.format(users=UserStats.total_users(),
                visitors=UserStats.total_visitors(self.engine),
                visitors_logged=UserStats.total_logged_in(self.engine),
-               datasets=PackageStats.total_packages())
+               datasets=PackageStats.total_packages(),
+               public=PackageStats.public_package_count(),
+               private=PackageStats.private_package_count())
 
         monthly_new_users = UserStats.users_by_month()
 
@@ -118,6 +126,12 @@ CKAN usage report
 
         elif cmd == 'visitors_logged':
             print UserStats.total_logged_in(self.engine)
+
+        elif cmd == 'private_packages':
+            print PackageStats.private_package_count()
+
+        elif cmd == 'public_packages':
+            print PackageStats.public_package_count()
 
         else:
             self._help()
