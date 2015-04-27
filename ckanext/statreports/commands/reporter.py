@@ -33,6 +33,8 @@ class Reporter(CkanCommand):
             - Show number of private packages
         reporter public_packages
             - Show number of public packages
+        reporter package_license_types
+            - Show number of packages by license type (open, closed or conditionally open)
     '''
     summary = __doc__.split('\n')[0]
     usage = __doc__
@@ -87,6 +89,13 @@ CKAN usage report
 
         return message
 
+    def _format_packages_by_license(self):
+
+        packages=PackageStats.license_type_package_count()
+        print packages
+        text = 'Open packages: '+str(packages.get('open'))+'\nClosed packages: '+str(packages.get('closed'))+'\n'
+        return text
+
     def command(self):
         self._load_config()
         self.engine = ckan.model.meta.engine
@@ -132,6 +141,9 @@ CKAN usage report
 
         elif cmd == 'public_packages':
             print PackageStats.public_package_count()
+
+        elif cmd == 'package_license_types':
+            print self._format_packages_by_license()
 
         else:
             self._help()
