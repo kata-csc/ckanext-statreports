@@ -52,23 +52,23 @@ class PackageStats(object):
 
     @classmethod
     def license_type_package_count(cls):
-        open_licenses = []
-        conditional_licenses = []
-        closed_licenses = []
-        register = license.LicenseRegister()
 
-        for unsorted in register.items():
-            if unsorted[1].isopen():
-                open_licenses.append(unsorted[0])
-            else:
-                closed_licenses.append(unsorted[0])
+        open_licenses = ['CC0-1.0', 'ODC-PDDL-1.0']
+        conditional_licenses = ['ODbL-1.0', 'ODC-BY-1.0',
+                                'CC-BY-1.0', 'CC-BY-ND-1.0', 'CC-BY-NC-SA-1.0', 'CC-BY-SA-1.0', 'CC-BY-NC-1.0', 'CC-BY-NC-ND-1.0',
+                                'CC-BY-2.0', 'CC-BY-ND-2.0', 'CC-BY-NC-SA-2.0', 'CC-BY-SA-2.0', 'CC-BY-NC-2.0', 'CC-BY-NC-ND-2.0',
+                                'CC-BY-3.0', 'CC-BY-ND-3.0', 'CC-BY-NC-SA-3.0', 'CC-BY-SA-3.0', 'CC-BY-NC-3.0', 'CC-BY-NC-ND-3.0',
+                                'CC-BY-4.0', 'CC-BY-ND-4.0', 'CC-BY-NC-SA-4.0', 'CC-BY-SA-4.0', 'CC-BY-NC-4.0', 'CC-BY-NC-ND-4.0']
+        not_closed_licenses = open_licenses + conditional_licenses
 
         open_license_count = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
             filter(model.Package.type == "dataset").filter(model.Package.license_id.in_(open_licenses)).count()
+        conditional_license_count = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
+            filter(model.Package.type == "dataset").filter(model.Package.license_id.in_(conditional_licenses)).count()
         closed_license_count = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
-            filter(model.Package.type == "dataset").filter(model.Package.license_id.in_(closed_licenses)).count()
+            filter(model.Package.type == "dataset").filter(~model.Package.license_id.in_(not_closed_licenses)).count()
 
-        return {'open': open_license_count, 'conditionally_open': 0, 'closed': closed_license_count}
+        return {'open': open_license_count, 'conditionally_open': conditional_license_count, 'closed': closed_license_count}
 
     @classmethod
     def rems_package_count(cls):
