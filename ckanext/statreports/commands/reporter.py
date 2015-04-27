@@ -94,7 +94,7 @@ CKAN usage report
         packages=PackageStats.license_type_package_count()
         print packages
         text = 'Open packages: ' + str(packages.get('open')) + \
-               '\nConditionally open packges: ' + str(packages.get('conditionally_open')) + \
+               '\nConditionally open packges: ' + str(packages.get('conditional')) + \
                '\nClosed packages: ' + str(packages.get('closed')) + '\n'
         return text
 

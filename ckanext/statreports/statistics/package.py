@@ -68,7 +68,7 @@ class PackageStats(object):
         closed_license_count = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
             filter(model.Package.type == "dataset").filter(~model.Package.license_id.in_(not_closed_licenses)).count()
 
-        return {'open': open_license_count, 'conditionally_open': conditional_license_count, 'closed': closed_license_count}
+        return {'open': open_license_count, 'conditional': conditional_license_count, 'closed': closed_license_count}
 
     @classmethod
     def rems_package_count(cls):
