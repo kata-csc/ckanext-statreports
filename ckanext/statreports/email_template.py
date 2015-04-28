@@ -9,9 +9,12 @@ totals = u'''
     Totals:
     -------
     Datasets: {datasets}
-    Public dataset: {public}
-    Private datsets: {private}
-    Users: {users}
+    Public datasets: {public}
+    Private datasets: {private}
+    Open datasets: {open_datasets}
+    Conditionally open datasets: {conditionally_open_datasets}
+    Closed datasets: {closed_datasets}
+    Registered users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
 
@@ -22,10 +25,10 @@ monthly = u'''
     --------------
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}
-    New users: {new_users}
+    New registered users: {new_users}
     '''
 
 footer = u'''
-    Unique visitor differentiation is based on IP address and HTTP request header fields determining user
-    agent (browser), preferred language and content encoding.
-    '''
+Unique visitor differentiation is based on IP address and HTTP request header fields determining user
+agent (browser), preferred language and content encoding.
+'''

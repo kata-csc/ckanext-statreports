@@ -52,13 +52,20 @@ class Reporter(CkanCommand):
         exit()
 
     def _generate_report(self):
+
+        packages = PackageStats.license_type_package_count()
+
         message = email_template.header
         message += email_template.totals.format(users=UserStats.total_users(),
                                                 visitors=UserStats.total_visitors(self.engine),
                                                 visitors_logged=UserStats.total_logged_in(self.engine),
                                                 datasets=PackageStats.total_packages(),
                                                 public=PackageStats.public_package_count(),
-                                                private=PackageStats.private_package_count())
+                                                private=PackageStats.private_package_count(),
+                                                open_datasets=packages['open'],
+                                                conditionally_open_datasets=packages['conditional'],
+                                                closed_datasets=packages['closed'],
+                                                )
 
         monthly_new_users = UserStats.users_by_month()
 
@@ -75,15 +82,6 @@ class Reporter(CkanCommand):
         message += email_template.footer
 
         return message
-
-    def _format_packages_by_license(self):
-
-        packages=PackageStats.license_type_package_count()
-        # print packages
-        text = 'Open packages: ' + str(packages.get('open')) + \
-               '\nConditionally open packges: ' + str(packages.get('conditional')) + \
-               '\nClosed packages: ' + str(packages.get('closed')) + '\n'
-        return text
 
     def command(self):
         self._load_config()
@@ -106,7 +104,7 @@ class Reporter(CkanCommand):
 
             from ckan.lib.mailer import _mail_recipient  # Must by imported after translator object is initialized
 
-            _mail_recipient('Recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
+            _mail_recipient('recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
 
         elif cmd == 'report':
             print self._generate_report()
@@ -132,7 +130,11 @@ class Reporter(CkanCommand):
             print PackageStats.public_package_count()
 
         elif cmd == 'package_license_types':
-            print self._format_packages_by_license()
+            packages = PackageStats.license_type_package_count()
+            text = 'Open datasets: ' + str(packages.get('open')) + \
+                   '\nConditionally open datasets: ' + str(packages.get('conditional')) + \
+                   '\nClosed datasets: ' + str(packages.get('closed')) + '\n'
+            print text
 
         else:
             self._help()
