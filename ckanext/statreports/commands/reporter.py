@@ -3,6 +3,7 @@
 from datetime import datetime
 import sys
 import logging
+from dateutil.relativedelta import relativedelta
 
 from ckan.lib.cli import CkanCommand
 import ckan.model
@@ -58,9 +59,12 @@ class Reporter(CkanCommand):
 
     def _generate_report(self):
 
+        config = self._get_config()
+        title = config.get('ckan.site_title', 'CKAN')
+
         packages = PackageStats.license_type_package_count()
 
-        message = email_template.header
+        message = email_template.header.format(title=title)
         message += email_template.totals.format(users=UserStats.total_users(),
                                                 visitors=UserStats.total_visitors(self.engine),
                                                 visitors_logged=UserStats.total_logged_in(self.engine),
@@ -111,6 +115,8 @@ class Reporter(CkanCommand):
             from ckan.lib.mailer import _mail_recipient  # Must by imported after translator object is initialized
 
             _mail_recipient('recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
+
+            print 'Sent usage report e-mail'
 
         elif cmd == 'report':
             print self._generate_report()

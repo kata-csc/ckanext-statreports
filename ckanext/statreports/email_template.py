@@ -1,8 +1,8 @@
 '''E-mail report template'''
 
 header = u'''
-CKAN usage report
------------------
+{title} usage report
+------------------
 
 '''
 totals = u'''
