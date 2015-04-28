@@ -14,6 +14,7 @@ totals = u'''
     Open datasets: {open_datasets}
     Conditionally open datasets: {conditionally_open_datasets}
     Closed datasets: {closed_datasets}
+    Datasets using REMS: {rems_datasets}
     Registered users: {users}
     Unique visitors: {visitors}
     Unique logged in users: {visitors_logged}

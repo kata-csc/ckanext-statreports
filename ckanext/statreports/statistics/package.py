@@ -72,5 +72,26 @@ class PackageStats(object):
 
     @classmethod
     def rems_package_count(cls):
-        #TODO implement
-        pass
+        '''
+        Return total of published packages using REMS service provided by CSC.
+        Assuming state="active", type="dataset", private=False
+
+        :return: count
+        '''
+
+        res = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
+            filter(model.Package.type == "dataset").filter(model.Package.private == False).\
+            filter(sa.and_(model.PackageExtra.package_id == model.Package.id,
+                           model.PackageExtra.key == 'availability',
+                           model.PackageExtra.value == 'access_application'))
+
+        if not res:
+            return 0
+
+        res2 = model.Session.query(model.PackageExtra).filter(
+            sa.and_(model.PackageExtra.package_id == res[0].id,
+                    model.PackageExtra.key == 'access_application_URL',
+                    model.PackageExtra.value.like('https://reetta.csc.fi%'))).count()
+
+        return res2
+

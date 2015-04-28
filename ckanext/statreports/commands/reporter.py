@@ -37,6 +37,8 @@ class Reporter(CkanCommand):
             - Show number of public packages
         reporter package_license_types
             - Show number of packages by license type (open, closed or conditionally open)
+        reporter rems
+            - Show number of packages using REMS service provided by CSC
     '''
     summary = __doc__.split('\n')[0]
     usage = __doc__
@@ -65,6 +67,7 @@ class Reporter(CkanCommand):
                                                 open_datasets=packages['open'],
                                                 conditionally_open_datasets=packages['conditional'],
                                                 closed_datasets=packages['closed'],
+                                                rems_datasets=PackageStats.rems_package_count(),
                                                 )
 
         monthly_new_users = UserStats.users_by_month()
@@ -135,6 +138,9 @@ class Reporter(CkanCommand):
                    '\nConditionally open datasets: ' + str(packages.get('conditional')) + \
                    '\nClosed datasets: ' + str(packages.get('closed')) + '\n'
             print text
+
+        elif cmd == 'rems':
+            print PackageStats.rems_package_count()
 
         else:
             self._help()
