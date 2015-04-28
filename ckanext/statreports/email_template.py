@@ -3,7 +3,6 @@
 header = u'''
 {title} usage report
 ------------------
-
 '''
 totals = u'''
     Totals:

@@ -81,10 +81,9 @@ class Reporter(CkanCommand):
 
         for i in range(0, 5):
             curdate = datetime.utcnow()
-            month = (int(curdate.month) - i) % 12  # [0..11]
-            year_month = '%s-%02d' % (curdate.year, 12 if month == 0 else month)
+            year_month = (curdate + relativedelta(months=-i)).isoformat()[:7]
             message += email_template.monthly.format(
-                month=year_month if int(year_month[-2:]) != int(curdate.month) else year_month + ' (incomplete)',
+                month=year_month if year_month != curdate.isoformat()[:7] else year_month + ' (incomplete)',
                 visitors=UserStats.total_visitors(self.engine, year_month=year_month),
                 visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
                 new_users=monthly_new_users.get(year_month, 0))
