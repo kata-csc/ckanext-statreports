@@ -3,7 +3,7 @@
 import sqlalchemy as sa
 
 import ckan.model as model
-import ckan.model.license as license
+
 
 def _table(name):
     return sa.Table(name, model.meta.metadata, autoload=True)
@@ -94,4 +94,3 @@ class PackageStats(object):
                     model.PackageExtra.value.like('https://reetta.csc.fi%'))).count()
 
         return res2
-
