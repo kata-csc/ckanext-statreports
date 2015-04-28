@@ -1,5 +1,6 @@
+'''Report CKAN usage statistics'''
+
 from datetime import datetime
-import pprint
 import sys
 import logging
 
@@ -13,6 +14,8 @@ from ckanext.statreports import email_template
 
 log = logging.getLogger(__name__)
 
+
+# TODO: Tests. Maybe should be tested without ckanext-kata.
 
 class Reporter(CkanCommand):
     '''
