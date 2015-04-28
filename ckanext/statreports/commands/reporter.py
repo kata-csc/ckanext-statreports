@@ -9,6 +9,8 @@ import ckan.model
 from ckanext.statreports.statistics.user import UserStats
 from ckanext.statreports.statistics.package import PackageStats
 
+from ckanext.statreports import email_template
+
 log = logging.getLogger(__name__)
 
 
@@ -50,49 +52,34 @@ class Reporter(CkanCommand):
         exit()
 
     def _generate_report(self):
-        message = u'''
-CKAN usage report
------------------
-
-    Totals:
-    -------
-    Datasets: {datasets}
-    Public dataset: {public}
-    Private datsets: {private}
-    Users: {users}
-    Unique visitors: {visitors}
-    Unique logged in users: {visitors_logged}
-
-    '''.format(users=UserStats.total_users(),
-               visitors=UserStats.total_visitors(self.engine),
-               visitors_logged=UserStats.total_logged_in(self.engine),
-               datasets=PackageStats.total_packages(),
-               public=PackageStats.public_package_count(),
-               private=PackageStats.private_package_count())
+        message = email_template.header
+        message += email_template.totals.format(users=UserStats.total_users(),
+                                                visitors=UserStats.total_visitors(self.engine),
+                                                visitors_logged=UserStats.total_logged_in(self.engine),
+                                                datasets=PackageStats.total_packages(),
+                                                public=PackageStats.public_package_count(),
+                                                private=PackageStats.private_package_count())
 
         monthly_new_users = UserStats.users_by_month()
 
-        for i in range(0, 3):
+        for i in range(0, 5):
             curdate = datetime.utcnow()
             month = (int(curdate.month) - i) % 12  # [0..11]
             year_month = '%s-%02d' % (curdate.year, 12 if month == 0 else month)
-            message += u'''
-    Month {month}:
-    --------------
-    Unique visitors: {visitors}
-    Unique logged in users: {visitors_logged}
-    New users: {new_users}
-    '''.format(month=year_month,
-               visitors=UserStats.total_visitors(self.engine, year_month=year_month),
-               visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
-               new_users=monthly_new_users.get(year_month, 0))
+            message += email_template.monthly.format(
+                month=year_month if int(year_month[-2:]) != int(curdate.month) else year_month + ' (incomplete)',
+                visitors=UserStats.total_visitors(self.engine, year_month=year_month),
+                visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
+                new_users=monthly_new_users.get(year_month, 0))
+
+        message += email_template.footer
 
         return message
 
     def _format_packages_by_license(self):
 
         packages=PackageStats.license_type_package_count()
-        print packages
+        # print packages
         text = 'Open packages: ' + str(packages.get('open')) + \
                '\nConditionally open packges: ' + str(packages.get('conditional')) + \
                '\nClosed packages: ' + str(packages.get('closed')) + '\n'
