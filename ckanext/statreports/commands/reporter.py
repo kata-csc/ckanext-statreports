@@ -1,5 +1,5 @@
 from datetime import datetime
-import pprint
+
 import sys
 import logging
 
@@ -70,6 +70,7 @@ CKAN usage report
                public=PackageStats.public_package_count(),
                private=PackageStats.private_package_count())
 
+        message += self._format_packages_by_license()
         monthly_new_users = UserStats.users_by_month()
 
         for i in range(0, 3):
@@ -93,9 +94,9 @@ CKAN usage report
 
         packages=PackageStats.license_type_package_count()
         print packages
-        text = 'Open packages: ' + str(packages.get('open')) + \
-               '\nConditionally open packges: ' + str(packages.get('conditional')) + \
-               '\nClosed packages: ' + str(packages.get('closed')) + '\n'
+        text = 'Freely accessible packages: ' + str(packages.get('free')) + \
+               '\nConditionally freely accessible packges: ' + str(packages.get('conditional')) + \
+               '\nOther packages: ' + str(packages.get('other')) + '\n'
         return text
 
     def command(self):
