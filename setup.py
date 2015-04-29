@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys, os
 
 version = '0.0.1'
 
@@ -20,6 +19,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[  # -*- Extra requirements: -*-
+        'python-dateutil == 1.5',
     ],
     entry_points=
     """

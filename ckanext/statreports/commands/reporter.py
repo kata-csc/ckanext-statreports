@@ -1,7 +1,9 @@
-from datetime import datetime
+'''Report CKAN usage statistics'''
 
+from datetime import datetime
 import sys
 import logging
+from dateutil.relativedelta import relativedelta
 
 from ckan.lib.cli import CkanCommand
 import ckan.model
@@ -9,8 +11,12 @@ import ckan.model
 from ckanext.statreports.statistics.user import UserStats
 from ckanext.statreports.statistics.package import PackageStats
 
+from ckanext.statreports import email_template
+
 log = logging.getLogger(__name__)
 
+
+# TODO: Tests. Maybe should be tested without ckanext-kata.
 
 class Reporter(CkanCommand):
     '''
@@ -35,6 +41,8 @@ class Reporter(CkanCommand):
             - Show number of public packages
         reporter package_license_types
             - Show number of packages by license type (open, closed or conditionally open)
+        reporter rems
+            - Show number of packages using REMS service provided by CSC
     '''
     summary = __doc__.split('\n')[0]
     usage = __doc__
@@ -50,54 +58,40 @@ class Reporter(CkanCommand):
         exit()
 
     def _generate_report(self):
-        message = u'''
-CKAN usage report
------------------
 
-    Totals:
-    -------
-    Datasets: {datasets}
-    Public dataset: {public}
-    Private datsets: {private}
-    Users: {users}
-    Unique visitors: {visitors}
-    Unique logged in users: {visitors_logged}
+        config = self._get_config()
+        title = config.get('ckan.site_title', 'CKAN')
 
-    '''.format(users=UserStats.total_users(),
-               visitors=UserStats.total_visitors(self.engine),
-               visitors_logged=UserStats.total_logged_in(self.engine),
-               datasets=PackageStats.total_packages(),
-               public=PackageStats.public_package_count(),
-               private=PackageStats.private_package_count())
+        packages = PackageStats.license_type_package_count()
+
+        message = email_template.header.format(title=title)
+        message += email_template.totals.format(users=UserStats.total_users(),
+                                                visitors=UserStats.total_visitors(self.engine),
+                                                visitors_logged=UserStats.total_logged_in(self.engine),
+                                                datasets=PackageStats.total_packages(),
+                                                public=PackageStats.public_package_count(),
+                                                private=PackageStats.private_package_count(),
+                                                open_datasets=packages['free'],
+                                                conditionally_open_datasets=packages['conditional'],
+                                                closed_datasets=packages['other'],
+                                                rems_datasets=PackageStats.rems_package_count(),
+                                                )
 
         message += self._format_packages_by_license()
         monthly_new_users = UserStats.users_by_month()
 
-        for i in range(0, 3):
+        for i in range(0, 5):
             curdate = datetime.utcnow()
-            month = (int(curdate.month) - i) % 12  # [0..11]
-            year_month = '%s-%02d' % (curdate.year, 12 if month == 0 else month)
-            message += u'''
-    Month {month}:
-    --------------
-    Unique visitors: {visitors}
-    Unique logged in users: {visitors_logged}
-    New users: {new_users}
-    '''.format(month=year_month,
-               visitors=UserStats.total_visitors(self.engine, year_month=year_month),
-               visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
-               new_users=monthly_new_users.get(year_month, 0))
+            year_month = (curdate + relativedelta(months=-i)).isoformat()[:7]
+            message += email_template.monthly.format(
+                month=year_month if year_month != curdate.isoformat()[:7] else year_month + ' (incomplete)',
+                visitors=UserStats.total_visitors(self.engine, year_month=year_month),
+                visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
+                new_users=monthly_new_users.get(year_month, 0))
+
+        message += email_template.footer
 
         return message
-
-    def _format_packages_by_license(self):
-
-        packages=PackageStats.license_type_package_count()
-        print packages
-        text = 'Freely accessible packages: ' + str(packages.get('free')) + \
-               '\nConditionally freely accessible packges: ' + str(packages.get('conditional')) + \
-               '\nOther packages: ' + str(packages.get('other')) + '\n'
-        return text
 
     def command(self):
         self._load_config()
@@ -120,7 +114,9 @@ CKAN usage report
 
             from ckan.lib.mailer import _mail_recipient  # Must by imported after translator object is initialized
 
-            _mail_recipient('Recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
+            _mail_recipient('recipient', mail_to, 'CKAN reporter', mailer_url, 'CKAN usage report', mail_body)
+
+            print 'Sent usage report e-mail'
 
         elif cmd == 'report':
             print self._generate_report()
@@ -146,7 +142,14 @@ CKAN usage report
             print PackageStats.public_package_count()
 
         elif cmd == 'package_license_types':
-            print self._format_packages_by_license()
+            packages = PackageStats.license_type_package_count()
+            text = 'Freely accessible datasets: ' + str(packages.get('free')) + \
+                   '\nConditionally freely accessible datasets: ' + str(packages.get('conditional')) + \
+                   '\nOther datasets: ' + str(packages.get('other')) + '\n'
+            print text
+
+        elif cmd == 'rems':
+            print PackageStats.rems_package_count()
 
         else:
             self._help()

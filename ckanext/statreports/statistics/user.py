@@ -73,5 +73,3 @@ class UserStats(object):
         else:
             sql = '''SELECT count(DISTINCT user_key) FROM tracking_raw WHERE url = '/user/logged_in' '''
         return engine.execute(sql, year_month=year_month).fetchone()[0]
-
-
