@@ -1,0 +1,56 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _("Etsin Stats") }}{% endblock %}
+
+{% block breadcrumb_content %}
+  {# <li class="active">{{ h.nav_link(_('FAQ'), controller='ckanext.kata.controllers:KataInfoController', action='render_faq', highlight_actions = 'new
+  index') }} #}
+{% endblock %}
+
+{% block main_content %}
+
+  <div class="row">
+    <div class="table-centered">
+      <h1>{{ _('Etsin Statistics') }}</h1>
+
+      <p>
+        This is a placeholder for the statistics page, which will show up-to-date general stats about Etsin.
+      </p>
+      <br />
+
+      <table class="table table-bordered table-hover table-condensed">
+        <tr>
+          <td>{{ _('Total registered users') }}</td>
+          <td class="td-center">{{ total_users }}</td>
+        </tr>
+        <tr>
+          <td>{{ _('Total unique visitors') }}</td>
+          <td class="td-center">{{ total_visitors }}</td>
+          </tr>
+        <tr>
+          <td>{{ _('Users currently logged in') }}</td>
+          <td class="td-center">{{ total_logged_in }}</td>
+        </tr>
+        </table>
+        <table class="table table-bordered table-hover table-condensed">
+        <tr>
+          <td>{{ _('Total amount of datasets') }}</td>
+          <td class="td-center">{{ total_packages }}</td>
+        </tr>
+        <tr>
+          <td>{{ _('Datasets with a free license') }}</td>
+          <td class="td-center">{{ packages_free }}</td>
+        </tr>
+        <tr>
+          <td>{{ _('Datasets with a conditional license') }}</td>
+          <td class="td-center">{{ packages_conditional }}</td>
+        </tr>
+        <tr>
+          <td>{{ _('Datasets with other license types') }}</td>
+          <td class="td-center">{{ packages_other }}</td>
+        </tr>
+      </table>
+      </div>
+  </div>
+
+{% endblock %}

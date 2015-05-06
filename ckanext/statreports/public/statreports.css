@@ -1,0 +1,11 @@
+/* Statreports plugin */
+
+.table-centered {
+    width: 50%;
+    float: none;
+    margin: 0 auto;
+}
+
+td.td-center {
+    text-align: center;
+}
