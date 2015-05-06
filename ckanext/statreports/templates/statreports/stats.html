@@ -1,6 +1,6 @@
 {% extends "page.html" %}
 
-{% block subtitle %}{{ _("Etsin Stats") }}{% endblock %}
+{% block subtitle %}{{ _("Etsin Statistics") }}{% endblock %}
 
 {% block breadcrumb_content %}
   {# <li class="active">{{ h.nav_link(_('FAQ'), controller='ckanext.kata.controllers:KataInfoController', action='render_faq', highlight_actions = 'new
@@ -14,7 +14,7 @@
       <h1>{{ _('Etsin Statistics') }}</h1>
 
       <p>
-        This is a placeholder for the statistics page, which will show up-to-date general stats about Etsin.
+        {{ _("The following tables show general information on current Etsin usage and datasets.") }}
       </p>
       <br />
 
@@ -28,7 +28,7 @@
           <td class="td-center">{{ total_visitors }}</td>
           </tr>
         <tr>
-          <td>{{ _('Users currently logged in') }}</td>
+          <td>{{ _('Currently logged in users') }}</td>
           <td class="td-center">{{ total_logged_in }}</td>
         </tr>
         </table>

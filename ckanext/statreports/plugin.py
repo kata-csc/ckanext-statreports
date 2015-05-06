@@ -10,7 +10,6 @@ class StatReports(p.SingletonPlugin):
         toolkit.add_template_directory(config, 'templates')
         toolkit.add_public_directory(config, 'public')
 
-
     def before_map(self, map):
 
         map.connect('statreports',
