@@ -14,17 +14,20 @@
       <h1>{{ _('Etsin Statistics') }}</h1>
 
       <p>
-        {{ _("The following tables show general information on current Etsin usage and datasets.") }}
+        {% trans %}
+        Statistics record the numbers of users and datasets of the service.
+        The statistics are based on the internal logs of the service.
+        {% endtrans %}
       </p>
       <br />
 
       <table class="table table-bordered table-hover table-condensed">
         <tr>
-          <td>{{ _('Total registered users') }}</td>
+          <td>{{ _('Total number of authenticated users') }}</td>
           <td class="td-center">{{ total_users }}</td>
         </tr>
         <tr>
-          <td>{{ _('Total unique visitors') }}</td>
+          <td>{{ _('Total number of visits') }}</td>
           <td class="td-center">{{ total_visitors }}</td>
           </tr>
         {#<tr>
@@ -34,23 +37,38 @@
         </table>
         <table class="table table-bordered table-hover table-condensed">
         <tr>
-          <td>{{ _('Total amount of datasets') }}</td>
+          <td>{{ _('Total number of datasets') }}</td>
           <td class="td-center">{{ total_packages }}</td>
         </tr>
         <tr>
-          <td>{{ _('Datasets with a free license') }}</td>
+          <td>{{ _('Number of open datasets') }}</td>
           <td class="td-center">{{ packages_free }}</td>
         </tr>
         <tr>
-          <td>{{ _('Datasets with a conditional license') }}</td>
+          <td>{{ _('Number of conditionally open datasets') }}</td>
           <td class="td-center">{{ packages_conditional }}</td>
         </tr>
         <tr>
-          <td>{{ _('Datasets with other license types') }}</td>
+          <td>{{ _('Number of other datasets') }}</td>
           <td class="td-center">{{ packages_other }}</td>
         </tr>
       </table>
+
+      <p>
+        {% trans %}
+        Open datasets are licensed under
+        <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0</a> or
+        <a href="http://opendatacommons.org/licenses/pddl/" target="_blank">OCD-PDDL</a> licenses.
+        Conditionally open datasets are licensed under various versions of
+        <a href="https://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY</a>,
+        <a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL</a> or
+        <a href="http://opendatacommons.org/licenses/by/" target="_blank">ODC-BY</a> licenses.
+        {% endtrans %}
+      </p>
+
+
       </div>
   </div>
+
 
 {% endblock %}

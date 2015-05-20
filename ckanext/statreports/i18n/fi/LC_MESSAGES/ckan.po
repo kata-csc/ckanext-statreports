@@ -1,0 +1,84 @@
+# Finnish translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-05-20 08:04+0000\n"
+"PO-Revision-Date: 2015-05-20 10:51+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: fi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/statreports/templates/statreports/stats.html:3
+#: ckanext/statreports/templates/statreports/stats.html:14
+msgid "Etsin Statistics"
+msgstr "Etsin käyttötilastot"
+
+#: ckanext/statreports/templates/statreports/stats.html:17
+msgid ""
+" Statistics record the numbers of users and datasets of the service. The "
+"statistics are based on the internal logs of the service. "
+msgstr ""
+"Käyttötilastoissa seurataan Etsin-palvelun käyttäjä- "
+"ja aineistomääriä. Tilastointi pohjautuu palvelun sisäisiin käyttölokeihin."
+
+#: ckanext/statreports/templates/statreports/stats.html:26
+msgid "Total number of authenticated users"
+msgstr "Kirjautuneiden käyttäjien kokonaismäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:30
+msgid "Total number of visits"
+msgstr "Sivukäyntien kokonaismäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:40
+msgid "Total number of datasets"
+msgstr "Aineistojen kokonaismäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:44
+msgid "Number of open datasets"
+msgstr "Avointen aineistojen lukumäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:48
+msgid "Number of conditionally open datasets"
+msgstr "Ehdollisesti avointen aineistojen lukumäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:52
+msgid "Number of other datasets"
+msgstr "Muiden aineistojen lukumäärä"
+
+#: ckanext/statreports/templates/statreports/stats.html:58
+msgid ""
+" Open datasets are licensed under <a "
+"href=\"https://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">CC0</a> or <a "
+"href=\"http://opendatacommons.org/licenses/pddl/\" target=\"_blank\">OCD-"
+"PDDL</a> licenses. Conditionally open datasets are licensed under various"
+" versions of <a "
+"href=\"https://creativecommons.org/licenses/by/4.0/legalcode\" "
+"target=\"_blank\">CC-BY</a>, <a "
+"href=\"http://opendatacommons.org/licenses/odbl/\" "
+"target=\"_blank\">ODbL</a> or <a "
+"href=\"http://opendatacommons.org/licenses/by/\" target=\"_blank\">ODC-"
+"BY</a> licenses. "
+msgstr ""
+" Avointen aineistojen käyttölupa on <a "
+"href=\"https://creativecommons.org/publicdomain/zero/1.0/legalcode.fi\" "
+"target=\"_blank\">CC0</a> tai <a "
+"href=\"http://opendatacommons.org/licenses/pddl/\" target=\"_blank\">OCD-"
+"PDDL</a>. Ehdollisesti avointen aineistojen käyttölupa on jokin <a "
+"href=\"https://creativecommons.org/licenses/by/4.0/legalcode.fi\" "
+"target=\"_blank\">CC-BY</a>, <a "
+"href=\"http://opendatacommons.org/licenses/odbl/\" "
+"target=\"_blank\">ODbL</a> tai <a "
+"href=\"http://opendatacommons.org/licenses/by/\" target=\"_blank\">ODC-"
+"BY</a> versio."
+
+

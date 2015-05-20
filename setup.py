@@ -21,6 +21,19 @@ setup(
     install_requires=[  # -*- Extra requirements: -*-
         'python-dateutil == 1.5',
     ],
+    package_data={
+        'ckan': [
+            'i18n/*/LC_MESSAGES/*.mo',
+        ]
+    },
+    message_extractors={
+        'ckanext': [
+            ('**.py', 'python', None),  #
+            ('statreports/templates/**.html', 'ckan', None),
+            ('statreports/templates/statreports/**.html', 'ckan', None),
+        ],
+    },
+
     entry_points=
     """
     [ckan.plugins]
