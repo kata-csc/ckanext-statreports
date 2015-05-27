@@ -77,7 +77,6 @@ class Reporter(CkanCommand):
                                                 rems_datasets=PackageStats.rems_package_count(),
                                                 )
 
-        message += self._format_packages_by_license()
         monthly_new_users = UserStats.users_by_month()
 
         for i in range(0, 5):
