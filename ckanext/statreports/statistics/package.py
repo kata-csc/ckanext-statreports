@@ -85,12 +85,12 @@ class PackageStats(object):
                            model.PackageExtra.key == 'availability',
                            model.PackageExtra.value == 'access_application'))
 
-        if not res:
+        try:
+            res2 = model.Session.query(model.PackageExtra).filter(
+                sa.and_(model.PackageExtra.package_id == res[0].id,
+                        model.PackageExtra.key == 'access_application_URL',
+                        model.PackageExtra.value.like('https://reetta.csc.fi%'))).count()
+        except IndexError:
             return 0
-
-        res2 = model.Session.query(model.PackageExtra).filter(
-            sa.and_(model.PackageExtra.package_id == res[0].id,
-                    model.PackageExtra.key == 'access_application_URL',
-                    model.PackageExtra.value.like('https://reetta.csc.fi%'))).count()
 
         return res2
