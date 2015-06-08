@@ -20,7 +20,7 @@ class StatisticsController(BaseController):
 
         extra_vars["total_users"] = UserStats.total_users()
         extra_vars["total_visitors"] = UserStats.total_visitors(engine)     # unique visitors
-        extra_vars["total_logged_in"] = UserStats.total_logged_in(engine)
+        #extra_vars["total_logged_in"] = UserStats.total_logged_in()
         extra_vars["total_packages"] = PackageStats.total_packages()
 
         packages_by_license_type = PackageStats.license_type_package_count()

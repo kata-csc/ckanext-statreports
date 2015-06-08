@@ -67,7 +67,7 @@ class Reporter(CkanCommand):
         message = email_template.header.format(title=title)
         message += email_template.totals.format(users=UserStats.total_users(),
                                                 visitors=UserStats.total_visitors(self.engine),
-                                                visitors_logged=UserStats.total_logged_in(self.engine),
+                                                visitors_logged=UserStats.total_logged_in(),
                                                 datasets=PackageStats.total_packages(),
                                                 public=PackageStats.public_package_count(),
                                                 private=PackageStats.private_package_count(),
@@ -85,7 +85,7 @@ class Reporter(CkanCommand):
             message += email_template.monthly.format(
                 month=year_month if year_month != curdate.isoformat()[:7] else year_month + ' (incomplete)',
                 visitors=UserStats.total_visitors(self.engine, year_month=year_month),
-                visitors_logged=UserStats.total_logged_in(self.engine, year_month=year_month),
+                visitors_logged=UserStats.total_logged_in(year_month=year_month),
                 new_users=monthly_new_users.get(year_month, 0))
 
         message += email_template.footer
@@ -132,7 +132,7 @@ class Reporter(CkanCommand):
             print UserStats.total_visitors(self.engine)
 
         elif cmd == 'visitors_logged':
-            print UserStats.total_logged_in(self.engine)
+            print UserStats.total_logged_in()
 
         elif cmd == 'private_packages':
             print PackageStats.private_package_count()
