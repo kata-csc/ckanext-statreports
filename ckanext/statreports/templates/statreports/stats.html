@@ -1,74 +1,74 @@
 {% extends "page.html" %}
 
-{% block subtitle %}{{ _("Etsin Statistics") }}{% endblock %}
+{% block content %}
 
-{% block breadcrumb_content %}
-  {# <li class="active">{{ h.nav_link(_('FAQ'), controller='ckanext.kata.controllers:KataInfoController', action='render_faq', highlight_actions = 'new
-  index') }} #}
-{% endblock %}
+  <div id="etsin-main">
+    <div class="etsin-container read-base-container">
+      <div class="container container-medium">
+        {% block flash %}
+          {{ super() }}
+        {% endblock %}
+        <div class="row-fluid">
+          {%- block inner_content %}
 
-{% block main_content %}
-
-  <div class="row">
-    <div class="table-centered">
-      <h1>{{ _('Etsin Statistics') }}</h1>
-
-      <p>
-        {% trans %}
-        Statistics record the numbers of users and datasets of the service.
-        The statistics are based on the internal logs of the service.
-        {% endtrans %}
-      </p>
-      <br />
-
-      <table class="table table-bordered table-hover table-condensed">
-        <tr>
-          <td>{{ _('Total number of authenticated users') }}</td>
-          <td class="td-center">{{ total_users }}</td>
-        </tr>
-        <tr>
-          <td>{{ _('Total number of visits') }}</td>
-          <td class="td-center">{{ total_visitors }}</td>
-          </tr>
-        {#<tr>
-          <td>{{ _('Currently logged in users') }}</td>
-          <td class="td-center">{{ total_logged_in }}</td>
-        </tr>#}
-        </table>
-        <table class="table table-bordered table-hover table-condensed">
-        <tr>
-          <td>{{ _('Total number of datasets') }}</td>
-          <td class="td-center">{{ total_packages }}</td>
-        </tr>
-        <tr>
-          <td>{{ _('Number of open datasets') }}</td>
-          <td class="td-center">{{ packages_free }}</td>
-        </tr>
-        <tr>
-          <td>{{ _('Number of conditionally open datasets') }}</td>
-          <td class="td-center">{{ packages_conditional }}</td>
-        </tr>
-        <tr>
-          <td>{{ _('Number of other datasets') }}</td>
-          <td class="td-center">{{ packages_other }}</td>
-        </tr>
-      </table>
-
-      <p>
-        {% trans %}
-        Open datasets are licensed under
-        <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0</a> or
-        <a href="http://opendatacommons.org/licenses/pddl/" target="_blank">OCD-PDDL</a> licenses.
-        Conditionally open datasets are licensed under various versions of
-        <a href="https://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY</a>,
-        <a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL</a> or
-        <a href="http://opendatacommons.org/licenses/by/" target="_blank">ODC-BY</a> licenses.
-        {% endtrans %}
-      </p>
-
-
+            <div class="row">
+              <div class="table-centered">
+                <h1>{{ _('Etsin Statistics') }}</h1>
+                <p>
+                  {% trans %}
+                  Statistics record the numbers of users and datasets of the service.
+                  The statistics are based on the internal logs of the service.
+                  {% endtrans %}
+                </p>
+                <br />
+                <table class="table table-bordered table-hover table-condensed">
+                  <tr>
+                    <td>{{ _('Total number of authenticated users') }}</td>
+                    <td class="td-center">{{ total_users }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ _('Total number of visits') }}</td>
+                    <td class="td-center">{{ total_visitors }}</td>
+                  </tr>
+                  {#<tr>
+                  <td>{{ _('Currently logged in users') }}</td>
+                  <td class="td-center">{{ total_logged_in }}</td>
+                </tr>#}
+                </table>
+                <table class="table table-bordered table-hover table-condensed">
+                  <tr>
+                    <td>{{ _('Total number of datasets') }}</td>
+                    <td class="td-center">{{ total_packages }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ _('Number of open datasets') }}</td>
+                    <td class="td-center">{{ packages_free }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ _('Number of conditionally open datasets') }}</td>
+                    <td class="td-center">{{ packages_conditional }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ _('Number of other datasets') }}</td>
+                    <td class="td-center">{{ packages_other }}</td>
+                  </tr>
+                </table>
+                <p>
+                  {% trans %}
+                  Open datasets are licensed under
+                  <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0</a> or
+                  <a href="http://opendatacommons.org/licenses/pddl/" target="_blank">OCD-PDDL</a> licenses.
+                  Conditionally open datasets are licensed under various versions of
+                  <a href="https://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY</a>,
+                  <a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL</a> or
+                  <a href="http://opendatacommons.org/licenses/by/" target="_blank">ODC-BY</a> licenses.
+                  {% endtrans %}
+                </p>
+              </div>
+            </div>
+          {% endblock %}
+        </div>
       </div>
+    </div>
   </div>
-
-
 {% endblock %}
