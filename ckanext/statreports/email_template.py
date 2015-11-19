@@ -1,7 +1,7 @@
 '''E-mail report template'''
 
 header = u'''
-{title} usage report
+{title} usage report (from {machine})
 ------------------
 '''
 totals = u'''
@@ -31,6 +31,20 @@ monthly = u'''
         Unique logged in users: {visitors_logged}
         New registered users: {new_users}
     '''
+
+monthly_datasets = u'''
+    Datasets, monthly:
+    ------------------
+    Datasets: {monthly_packages}
+    Public datasets: {monthly_public}
+    Private datasets: {monthly_private}
+
+    Open datasets: {monthly_open}
+    Conditionally open datasets: {monthly_conditional}
+    Closed datasets: {monthly_closed}
+
+    '''
+
 
 footer = u'''
 -----------------

@@ -61,10 +61,11 @@ class Reporter(CkanCommand):
 
         config = self._get_config()
         title = config.get('ckan.site_title', 'CKAN')
+        machine = config.get('ckan.site_url', '')
 
         packages = PackageStats.license_type_package_count()
 
-        message = email_template.header.format(title=title)
+        message = email_template.header.format(title=title, machine=machine)
         message += email_template.totals.format(users=UserStats.total_users(),
                                                 visitors=UserStats.total_visitors(self.engine),
                                                 visitors_logged=UserStats.total_logged_in(),
@@ -86,7 +87,28 @@ class Reporter(CkanCommand):
                 month=year_month if year_month != curdate.isoformat()[:7] else year_month + ' (incomplete)',
                 visitors=UserStats.total_visitors(self.engine, year_month=year_month),
                 visitors_logged=UserStats.total_logged_in(year_month=year_month),
-                new_users=monthly_new_users.get(year_month, 0))
+                new_users=monthly_new_users.get(year_month, 0),
+            )
+        _monthly_packages = PackageStats.total_new_packages(6)
+        _monthly_public = PackageStats.public_packages_monthly(6)
+        _monthly_private = PackageStats.private_packages_monthly(6)
+        _monthly_open = PackageStats.license_type_package_count_monthly(6).get('free')
+        _monthly_conditional = PackageStats.license_type_package_count_monthly(6).get('conditional')
+        _monthly_closed = PackageStats.license_type_package_count_monthly(6).get('other')
+        monthly_packages = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_packages]
+        monthly_public = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_public]
+        monthly_private = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_private]
+        monthly_open = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_open]
+        monthly_conditional = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_conditional]
+        monthly_closed = ['{0}: {1}'.format(item[0], item[1]) for item in _monthly_closed]
+        message += email_template.monthly_datasets.format(
+            monthly_packages=". ".join(monthly_packages),
+            monthly_public=". ".join(monthly_public),
+            monthly_private=". ".join(monthly_private),
+            monthly_open=". ".join(monthly_open),
+            monthly_conditional=". ".join(monthly_conditional),
+            monthly_closed=". ".join(monthly_closed)
+        )
 
         message += email_template.footer
 

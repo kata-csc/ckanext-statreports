@@ -28,5 +28,9 @@ class StatisticsController(BaseController):
         extra_vars["packages_free"] = packages_by_license_type["free"]
         extra_vars["packages_conditional"] = packages_by_license_type["conditional"]
         extra_vars["packages_other"] = packages_by_license_type["other"]
+        #extra_vars["private_packages_monthly"] = PackageStats.private_packages_monthly()
+        #extra_vars["public_packages_monthly"] = PackageStats.public_packages_monthly()
+        #extra_vars["license_type_package_count_monthly"] = PackageStats.license_type_package_count_monthly()
+        #extra_vars["total_packages_monthly"] = PackageStats.total_new_packages()
 
         return  render('statreports/stats.html', extra_vars=extra_vars)
