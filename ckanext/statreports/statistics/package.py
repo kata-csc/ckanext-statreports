@@ -180,7 +180,17 @@ on ptb.id = package_revision.id group by package_revision.id order by min(revisi
 
     @classmethod
     def _packages_monthly_by_license(cls, licenses, not_=''):
+        '''
+        Functionality as method name depicts
+
+        :param licenses: list of licenses
+        :param not_: whether to use IN or NOT IN against the list of licenses. For NOT IN not_ has to be exactly 'not '
+        :return: results from fetchall
+        '''
+
         parameters = [('license_{i}'.format(i=i), l) for i, l in enumerate(licenses)]
+        # The sql query below can be used for both types: WHERE IN and WHERE NOT IN. Note that the not must be in
+        # a specific form: 'not '
         if not_ not in ['', 'not ']:
             not_ = ""
         params = dict()
