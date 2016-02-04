@@ -18,9 +18,6 @@ setup(
     namespace_packages=['ckanext', 'ckanext.statreports'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[  # -*- Extra requirements: -*-
-        'python-dateutil == 1.5',
-    ],
     package_data={
         'ckan': [
             'i18n/*/LC_MESSAGES/*.mo',
