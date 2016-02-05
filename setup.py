@@ -30,7 +30,6 @@ setup(
             ('statreports/templates/statreports/**.html', 'ckan', None),
         ],
     },
-
     entry_points=
     """
     [ckan.plugins]
