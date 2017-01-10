@@ -231,7 +231,11 @@ on ptb.id = package_revision.id group by package_revision.id order by min(revisi
             filter(model.Package.type == "dataset").filter(model.Package.private == False).\
             filter(sa.and_(model.PackageExtra.package_id == model.Package.id,
                            model.PackageExtra.key == 'availability',
-                           model.PackageExtra.value == 'access_application'))
+                           sa.or_(model.PackageExtra.value == 'access_application_rems_ida',
+                                  model.PackageExtra.value == 'access_application_rems_other'
+                                  )
+                           )
+                   )
 
         try:
             res2 = model.Session.query(model.PackageExtra).filter(
