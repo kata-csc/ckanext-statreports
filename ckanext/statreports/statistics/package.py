@@ -227,20 +227,8 @@ on ptb.id = package_revision.id group by package_revision.id order by min(revisi
         :return: count
         '''
 
-        res = model.Session.query(model.Package.id).filter(model.Package.state == "active").\
-            filter(model.Package.type == "dataset").filter(model.Package.private == False).\
-            filter(sa.and_(model.PackageExtra.package_id == model.Package.id,
-                           model.PackageExtra.key == 'availability',
-                           model.PackageExtra.value == 'access_application_rems',
-                           )
-                   )
+        res = model.Session.query(model.Package, model.PackageExtra).filter(model.Package.state == "active").\
+            filter(model.Package.type == "dataset").filter(model.Package.private == False).join(model.PackageExtra).\
+            filter(sa.and_(model.PackageExtra.key == 'availability', model.PackageExtra.value == 'access_application_rems')).count()
 
-        try:
-            res2 = model.Session.query(model.PackageExtra).filter(
-                sa.and_(model.PackageExtra.package_id == res[0].id,
-                        model.PackageExtra.key == 'access_application_URL',
-                        model.PackageExtra.value.like('https://reetta.csc.fi%'))).count()
-        except IndexError:
-            return 0
-
-        return res2
+        return res
